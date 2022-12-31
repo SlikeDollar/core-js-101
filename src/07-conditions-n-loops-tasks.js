@@ -412,7 +412,9 @@ function getCommonDirectoryPath(pathes) {
     return '';
   }
 
-  while (dirs.every((dir) => dir[counter] === dirs[0][counter])) {
+  const func = () => dirs.every((dir) => dir[counter] === dirs[0][counter]);
+
+  while (func()) {
     counter += 1;
   }
 
