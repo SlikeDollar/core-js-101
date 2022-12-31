@@ -27,8 +27,20 @@
  *  21 => 'Fizz'
  *
  */
-function getFizzBuzz(/* num */) {
-  throw new Error('Not implemented');
+function getFizzBuzz(num) {
+  if (num % 5 === 0 && num % 3 === 0) {
+    return 'FizzBuzz';
+  }
+
+  if (num % 5 === 0) {
+    return 'Buzz';
+  }
+
+  if (num % 3 === 0) {
+    return 'Fizz';
+  }
+
+  return num;
 }
 
 
@@ -43,13 +55,19 @@ function getFizzBuzz(/* num */) {
  *   5  => 120
  *   10 => 3628800
  */
-function getFactorial(/* n */) {
-  throw new Error('Not implemented');
+function getFactorial(n) {
+  let res = n;
+
+  for (let i = n - 1; i >= 1; i -= 1) {
+    res *= i;
+  }
+
+  return res;
 }
 
 
 /**
- * Returns the sum of integer numbers between n1 and n2 (inclusive).
+error * Returns the sum of integer numbers between n1 and n2 (inclusive).
  *
  * @param {number} n1
  * @param {number} n2
@@ -60,8 +78,14 @@ function getFactorial(/* n */) {
  *   5,10  =>  45 ( = 5+6+7+8+9+10 )
  *   -1,1  =>  0  ( = -1 + 0 + 1 )
  */
-function getSumBetweenNumbers(/* n1, n2 */) {
-  throw new Error('Not implemented');
+function getSumBetweenNumbers(n1, n2) {
+  let sum = 0;
+
+  for (let i = n1; i < n2 + 1; i += 1) {
+    sum += i;
+  }
+
+  return sum;
 }
 
 
@@ -80,8 +104,13 @@ function getSumBetweenNumbers(/* n1, n2 */) {
  *   10,1,1   =>  false
  *   10,10,10 =>  true
  */
-function isTriangle(/* a, b, c */) {
-  throw new Error('Not implemented');
+function isTriangle(a, b, c) {
+  const maxSide = Math.max(a, b, c);
+  if (maxSide < [a, b, c].sort((m, k) => m - k).slice(0, 2).reduce((p, curr) => p + curr)) {
+    return true;
+  }
+
+  return false;
 }
 
 
@@ -117,8 +146,21 @@ function isTriangle(/* a, b, c */) {
  *   { top:20, left:20, width: 20, height: 20 }    =>  false
  *
  */
-function doRectanglesOverlap(/* rect1, rect2 */) {
-  throw new Error('Not implemented');
+function doRectanglesOverlap(rect1, rect2) {
+  const rect1Copy = JSON.parse(JSON.stringify(rect1));
+  const rect2Copy = JSON.parse(JSON.stringify(rect2));
+
+  rect1Copy.right = rect1Copy.left + rect1Copy.width;
+  rect2Copy.right = rect2Copy.left + rect2Copy.width;
+  rect1Copy.bottom = Math.abs(-(rect1Copy.top + rect1Copy.height));
+  rect2Copy.bottom = Math.abs(-(rect2Copy.top + rect2Copy.height));
+
+  if (rect1Copy.left >= rect2Copy.right || rect1Copy.right <= rect2Copy.left
+    || rect1Copy.top >= rect2Copy.bottom || rect1Copy.bottom <= rect2Copy.top) {
+    return false;
+  }
+
+  return true;
 }
 
 
@@ -148,8 +190,9 @@ function doRectanglesOverlap(/* rect1, rect2 */) {
  *   { center: { x:0, y:0 }, radius:10 },  { x:10, y:10 }   => false
  *
  */
-function isInsideCircle(/* circle, point */) {
-  throw new Error('Not implemented');
+function isInsideCircle(circle, point) {
+  const value = (point.x - circle.center.x) ** 2 + (point.y - circle.center.y) ** 2;
+  return value < circle.radius ** 2;
 }
 
 
@@ -164,8 +207,14 @@ function isInsideCircle(/* circle, point */) {
  *   'abracadabra'  => 'c'
  *   'entente' => null
  */
-function findFirstSingleChar(/* str */) {
-  throw new Error('Not implemented');
+function findFirstSingleChar(str) {
+  const obj = {};
+  str.split('').forEach((item) => {
+    obj[item] = (obj[item] || 0) + 1;
+  });
+
+  const singles = Object.entries(obj).filter((arr) => arr[1] === 1)[0];
+  return singles ? singles[0] : null;
 }
 
 
@@ -191,8 +240,8 @@ function findFirstSingleChar(/* str */) {
  *   5, 3, true, true   => '[3, 5]'
  *
  */
-function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
-  throw new Error('Not implemented');
+function getIntervalString(a, b, isStartIncluded, isEndIncluded) {
+  return `${isStartIncluded ? '[' : '('}${a < b ? a : b}, ${a < b ? b : a}${isEndIncluded ? ']' : ')'}`;
 }
 
 
@@ -208,8 +257,8 @@ function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
  * 'rotator' => 'rotator'
  * 'noon' => 'noon'
  */
-function reverseString(/* str */) {
-  throw new Error('Not implemented');
+function reverseString(str) {
+  return str.split('').reverse().join('');
 }
 
 
@@ -225,8 +274,8 @@ function reverseString(/* str */) {
  *   87354 => 45378
  *   34143 => 34143
  */
-function reverseInteger(/* num */) {
-  throw new Error('Not implemented');
+function reverseInteger(num) {
+  return `${num}`.split('').reverse().join('');
 }
 
 
@@ -268,8 +317,12 @@ function isCreditCardNumber(/* ccn */) {
  *   10000 ( 1+0+0+0+0 = 1 ) => 1
  *   165536 (1+6+5+5+3+6 = 26,  2+6 = 8) => 8
  */
-function getDigitalRoot(/* num */) {
-  throw new Error('Not implemented');
+function getDigitalRoot(num) {
+  let sum = num;
+  while (sum > 9) {
+    sum = (`${sum}`).split('').reduce((a, b) => +a + +b);
+  }
+  return sum;
 }
 
 
@@ -294,8 +347,18 @@ function getDigitalRoot(/* num */) {
  *   '{)' = false
  *   '{[(<{[]}>)]}' = true
  */
-function isBracketsBalanced(/* str */) {
-  throw new Error('Not implemented');
+
+function isBracketsBalanced(str) {
+  let parens = str;
+  while ((/\(\)/.test(parens) || /\{\}/.test(parens) || /\[\]/.test(parens) || /<>/.test(parens))) {
+    parens = parens.replace(/\(\)/, '').replace(/\{\}/, '').replace(/\[\]/, '').replace(/<>/, '');
+  }
+
+  if (parens.length > 0) {
+    return false;
+  }
+
+  return true;
 }
 
 
@@ -319,8 +382,8 @@ function isBracketsBalanced(/* str */) {
  *    365, 4  => '11231'
  *    365, 10 => '365'
  */
-function toNaryString(/* num, n */) {
-  throw new Error('Not implemented');
+function toNaryString(num, n) {
+  return num.toString(n);
 }
 
 
@@ -336,8 +399,25 @@ function toNaryString(/* num, n */) {
  *   ['/web/assets/style.css', '/.bin/mocha',  '/read.me'] => '/'
  *   ['/web/favicon.ico', '/web-scripts/dump', '/verbalizer/logs'] => '/'
  */
-function getCommonDirectoryPath(/* pathes */) {
-  throw new Error('Not implemented');
+function getCommonDirectoryPath(pathes) {
+  const dirs = [];
+  let counter = 0;
+
+  pathes.forEach((path) => {
+    const arr = path.split(/\//);
+    dirs.push(arr);
+  });
+
+  if (!pathes.every((path) => path[0] === '/')) {
+    return '';
+  }
+
+  while (dirs.every((dir) => dir[counter] === dirs[0][counter])) {
+    counter += 1;
+  }
+
+  const res = dirs[0].slice(0, counter).join('/');
+  return counter < dirs[0].length ? `${res}/` : res;
 }
 
 
